@@ -25,9 +25,9 @@ const Book = sequelize.define("books", {
   },
 
   cover: {
-  type: DataTypes.STRING,
-},
-  
+    type: DataTypes.STRING,
+  },
+
 });
 
 module.exports = Book;
