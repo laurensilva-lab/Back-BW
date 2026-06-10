@@ -1,11 +1,14 @@
-const express = require("express");
+const express =require("express");
 
-const Book = require("../models/Book");
+const Book =require("../models/Book");
 
-const router = express.Router();
+const verifyToken =require("../middlewares/verifyToken");
 
-router.get(
-  "/books",
+const verifyAdmin =require("../middlewares/verifyAdmin");
+
+const router =express.Router();
+
+router.get("/books",
   async (req, res) => {
 
     try {
@@ -18,7 +21,8 @@ router.get(
     } catch (error) {
 
       res.status(500).json({
-        message: error.message,
+        message:
+          error.message,
       });
 
     }
@@ -26,14 +30,14 @@ router.get(
   }
 );
 
-router.post(
-  "/books",
+router.post("/books",
+  verifyToken,
+  verifyAdmin,
   async (req, res) => {
 
     try {
 
-      const newBook =
-        await Book.create(
+      const newBook =await Book.create(
           req.body
         );
 
@@ -42,7 +46,8 @@ router.post(
     } catch (error) {
 
       res.status(500).json({
-        message: error.message,
+        message:
+          error.message,
       });
 
     }
@@ -50,8 +55,9 @@ router.post(
   }
 );
 
-router.put(
-  "/books/:id",
+router.put("/books/:id",
+  verifyToken,
+  verifyAdmin,
   async (req, res) => {
 
     try {
@@ -76,7 +82,8 @@ router.put(
     } catch (error) {
 
       res.status(500).json({
-        message: error.message,
+        message:
+          error.message,
       });
 
     }
@@ -84,8 +91,9 @@ router.put(
   }
 );
 
-router.delete(
-  "/books/:id",
+router.delete("/books/:id",
+  verifyToken,
+  verifyAdmin,
   async (req, res) => {
 
     try {
@@ -105,7 +113,8 @@ router.delete(
     } catch (error) {
 
       res.status(500).json({
-        message: error.message,
+        message:
+          error.message,
       });
 
     }
@@ -113,4 +122,4 @@ router.delete(
   }
 );
 
-module.exports = router;
+module.exports =router;

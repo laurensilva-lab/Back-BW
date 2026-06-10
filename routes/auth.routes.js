@@ -8,8 +8,7 @@ const router = express.Router();
 
 const SECRET_KEY = process.env.JWT_SECRET;
 
-router.post(
-  "/register",
+router.post("/register",
   async (req, res) => {
 
     try {
@@ -18,11 +17,9 @@ router.post(
         username,
         email,
         password,
-        role,
       } = req.body;
 
-      const userExists =
-        await User.findOne({
+      const userExists =await User.findOne({
           where: { email },
         });
 
@@ -37,14 +34,12 @@ router.post(
 
       }
 
-      const hashedPassword =
-        await bcrypt.hash(
+      const hashedPassword =await bcrypt.hash(
           password,
           10
         );
 
-      const newUser =
-        await User.create({
+      const newUser =await User.create({
 
           username,
           email,
@@ -53,7 +48,7 @@ router.post(
             hashedPassword,
 
           role:
-            role || "cliente",
+            "cliente",
 
         });
 
@@ -62,7 +57,8 @@ router.post(
     } catch (error) {
 
       res.status(500).json({
-        message: error.message,
+        message:
+          error.message,
       });
 
     }
@@ -70,9 +66,7 @@ router.post(
   }
 );
 
-router.post(
-  "/login",
-  async (req, res) => {
+router.post("/login",async (req, res) => {
 
     try {
 
@@ -81,8 +75,7 @@ router.post(
         password,
       } = req.body;
 
-      const user =
-        await User.findOne({
+      const user =await User.findOne({
           where: { email },
         });
 
@@ -97,8 +90,7 @@ router.post(
 
       }
 
-      const validPassword =
-        await bcrypt.compare(
+      const validPassword =await bcrypt.compare(
           password,
           user.password
         );
@@ -114,8 +106,7 @@ router.post(
 
       }
 
-      const token =
-        jwt.sign(
+      const token =jwt.sign(
           {
             id: user.id,
             role: user.role,
